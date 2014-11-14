@@ -17,6 +17,7 @@
  * Definitions
  */
 #define MAX_FILENAME 50 // we specify that the max filename size is 50
+#define EXPERIMENTER_TITLE_MAX 20
 
 /*
  * Calculates the average. This function sums over all the ints
@@ -41,7 +42,9 @@ int main (int argc, char *argv[]) {
 	}
 	else {
 		// try to open the file (we assume that the filename has been
-		// entered as the first argument
+		// entered as the first argument.
+		// On the discussion board the prof said we can assume
+		// that the data we're given is correctly formatted.
 		FILE *file = fopen(argv[1], "r");
 		/* fopen returns 0, the NULL pointer, on failure */
 		if ( file == 0 )
@@ -49,20 +52,33 @@ int main (int argc, char *argv[]) {
 			printf( "Could not open CSV file.\n" );
 			return EXIT_FAILURE;
 		}
+		else {
+			// The file is now opened.
+			// Build one record:
+			// Get experimenter's name and store in char array name
+			// Scan file until you hit first comma
+//			char name[EXPERIMENTER_TITLE_MAX];
+//			int counter=0;
+			int x;
+			/* read one character at a time from file, stopping at EOF, which
+			               indicates the end of the file.  Note that the idiom of "assign
+			               to a variable, check the value" used below works because
+			               the assignment statement evaluates to the value assigned. */
+			while  (( x = fgetc(file)) != 44 )
+			{
+				printf("%c", x);
+//				name[counter] = x;
+//				printf("%c", name[counter]);
+//				name[counter] = x;
+//				counter++;
+			}
+			// print space
+			printf(" ");
+
+			// we are now at the first integer
+		}
 	}
-	// The file is now opened.
 
 
-	char filename[MAX_FILENAME];
-	/*
-	 * get filename from user
-	 */
-	printf("Enter the name of the CSV file.\n");
-	fgets (filename, 50, stdin);
 
-	/*
-	 * Check to see if the extension is .txt
-	 */
-	int size_filename = strlen(filename) - 1;
-	printf("The size of the filename is: %d", size_filename);
 }
