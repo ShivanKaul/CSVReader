@@ -3,7 +3,7 @@
  Name        : ExperimentalAverage.c
  Author      : Shivan Kaul Sahib
  Version     : 1.0
- Description : Q1 on assignment 3
+ Description : Q1 on assignment 3 for COMP 206
  ============================================================================
  */
 /*
@@ -16,16 +16,17 @@
 /*
  * Definitions
  */
-#define MAX_FILENAME 50 // we specify that the max filename size is 50
-#define EXPERIMENTER_TITLE_MAX 20
-#define MAX_EXPERIMENTS 20
+#define MAX_FILENAME 50 // we specify the max filename size
+#define EXPERIMENTER_TITLE_MAX 20 // the name of the experimenter has to be < this
+#define MAX_EXPERIMENTS 20 // max number of experiments by one experimenter
+#define ASCII_CODE_FOR_COMMA 44 // ASCII code for a comma
 
 /*
- * Calculates the average. This function sums over all the ints
+ * Calculates the average. This function sums over all the floats
  * provided in the numbers array, and then divides the sum by the size
  * to give the average.
  */
-float calculate_average(float numbers[], int size) {
+float calculate_average(int numbers[], int size) {
 	int i;
 	float sum = 0;
 	for (i = 0; i < size; i++) {
@@ -54,61 +55,53 @@ int main (int argc, char *argv[]) {
 			return EXIT_FAILURE;
 		}
 		else {
-			setbuf(stdout, NULL);
-			// The file is now opened.
-			// Build one record:
-			// Get experimenter's name and store in char array name
-			// Scan file until you hit first comma
+			setbuf(stdout, NULL); // I was having problems with the buffer not printing, so turning that off.
+
+			/* The file is now opened.
+			 * The file is looped over using the while (x!=EOF) condition, and the first step we perform is check if
+			 * the next char is the end of the file.
+			 */
 			int x;
-			while  (( x = fgetc(file)) != 44 )
-			{
-				printf("%c", x);
-			}
-			// print space
-			printf(" ");
-			int counter = 0;
-			float numbers[MAX_EXPERIMENTS];
-			fscanf (file, "%f", &numbers[counter]);
-			printf("number is: %f\n", numbers[counter]);
-			counter++;
-			while  (( x = fgetc(file)) != '\n' ) {
-				printf("%c",x);
-				fscanf (file, "%f", &numbers[counter]);
-				printf("number is: %f\n", numbers[counter]);
+
+			while (x != EOF) { // This is the loop for the
+				// if we have reached the end of file ...
+				if (( x = fgetc(file)) == EOF) {
+					break; // ... then break out of the loop
+				}
+
+				// Until the first comma is seen, print the chars. This will print the experimenter's name.
+				while (x != ASCII_CODE_FOR_COMMA) // Check if current file pointer is at a comma
+				{
+					printf("%c", x);
+					x=fgetc(file); // move on to next char
+				}
+
+				// Print a space after the name
+				printf(" ");
+
+				/*
+				 * We will be parsing the floats from the csv file into an int array
+				 */
+				int counter = 0;
+				int numbers[MAX_EXPERIMENTS];
+				// get the first number
+				fscanf (file, "%i", &numbers[counter]);
 				counter++;
+				// get all the numbers from a record
+				while  (( x = fgetc(file)) != '\n' ) { // while we haven't reached a newline
+					// ... get the int
+					fscanf (file, "%i", &numbers[counter]);
+					counter++;
+				}
+
+				// the number of data points is given by the counter
+				int size = counter;
+				// we call the function average with the floats and the size to get the average
+				float average = calculate_average(numbers, size);
+				// print the answer rounded up to 2 decimal places
+				printf("%.2f\n", average);
 			}
-
-			printf("counter is: %d\n", counter);
-
-			//print values parsed to int array.
-			int j;
-			for(j=0; j<counter; ++j) {
-				printf("[%i]: %f\n",j,numbers[j]);
-			}
-
-			int size = counter;
-			printf("size: %d\n", size);
-			float average = calculate_average(numbers, size);
-			printf("%.2f\n", average);
-			// we are now at the first integer
+			close(file);
 		}
 	}
-
-	/*
-	 *
-			int counter = 0;
-			int numbers[MAX_EXPERIMENTS];
-			int firstnumber = 0;
-			fscanf (file, "%d", &firstnumber);
-			printf("%d\n", firstnumber);
-			numbers[counter] = firstnumber;
-			// while we're reading one record
-			while  (( x = fgetc(file)) != '\0' )
-			{
-				printf("int is: %d", x);
-				fscanf(file, "%d,", &numbers[counter] );
-				counter++;
-			}
-	 */
-
 }
