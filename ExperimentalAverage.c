@@ -18,6 +18,7 @@
  */
 #define MAX_FILENAME 50 // we specify that the max filename size is 50
 #define EXPERIMENTER_TITLE_MAX 20
+#define MAX_EXPERIMENTS 20
 
 /*
  * Calculates the average. This function sums over all the ints
@@ -57,8 +58,8 @@ int main (int argc, char *argv[]) {
 			// Build one record:
 			// Get experimenter's name and store in char array name
 			// Scan file until you hit first comma
-//			char name[EXPERIMENTER_TITLE_MAX];
-//			int counter=0;
+			//			char name[EXPERIMENTER_TITLE_MAX];
+			//			int counter=0;
 			int x;
 			/* read one character at a time from file, stopping at EOF, which
 			               indicates the end of the file.  Note that the idiom of "assign
@@ -67,14 +68,35 @@ int main (int argc, char *argv[]) {
 			while  (( x = fgetc(file)) != 44 )
 			{
 				printf("%c", x);
-//				name[counter] = x;
-//				printf("%c", name[counter]);
-//				name[counter] = x;
-//				counter++;
+				//				name[counter] = x;
+				//				printf("%c", name[counter]);
+				//				name[counter] = x;
+				//				counter++;
 			}
 			// print space
 			printf(" ");
-
+			int counter = 0;
+			int numbers[MAX_EXPERIMENTS];
+			char number_collector[3];
+			int counter_nums = 0;
+			// TODO: what is the EOF equivalent of end of line?
+			while  (( x = fgetc(file)) != EOF )
+			{
+				// if we aren't at a comma, then we are at an int
+				if (x != 44) {
+					// TODO: use a string builder
+					number_collector[counter_nums] = x;
+					counter_nums++;
+				}
+				else {
+					numbers[counter] = number_collector.toi;
+					counter++;
+				}
+			}
+			int size = counter;
+			printf("size: %d\n", size);
+			int average = calculate_average(numbers, size);
+			printf("%d\n", average);
 			// we are now at the first integer
 		}
 	}
