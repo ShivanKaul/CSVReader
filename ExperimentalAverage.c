@@ -80,7 +80,7 @@ int main (int argc, char *argv[]) {
 				printf(" ");
 
 				/*
-				 * We will be parsing the floats from the csv file into an int array
+				 * We will be parsing the ints from the csv file into an int array
 				 */
 				int counter = 0;
 				int numbers[MAX_EXPERIMENTS];
@@ -99,9 +99,11 @@ int main (int argc, char *argv[]) {
 				// we call the function average with the floats and the size to get the average
 				float average = calculate_average(numbers, size);
 				// print the answer rounded up to 2 decimal places
-				printf("%.2f\n", average);
+				float rounded_up = ceilf(average * 100) / 100;
+				printf("%.2f\n", rounded_up);
 			}
 			close(file);
 		}
 	}
+	return EXIT_SUCCESS;
 }
