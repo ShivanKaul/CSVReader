@@ -3,7 +3,6 @@
  Name        : ExperimentalAverage.c
  Author      : Shivan Kaul Sahib
  Version     : 1.0
- Description : Q1 on assignment 3 for COMP 206
  ============================================================================
  */
 /*
