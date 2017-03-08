@@ -60,9 +60,9 @@ int main (int argc, char *argv[]) {
 			 * The file is looped over using the while (x!=EOF) condition, and the first step we perform is check if
 			 * the next char is the end of the file.
 			 */
-			int x;
 
-			while (x != EOF) { // This is the loop for the
+			while (1) { // This is the loop for the
+                int x;
 				// if we have reached the end of file ...
 				if (( x = fgetc(file)) == EOF) {
 					break; // ... then break out of the loop
