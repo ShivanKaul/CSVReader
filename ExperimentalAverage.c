@@ -62,11 +62,7 @@ int main (int argc, char *argv[]) {
 			 */
 			int x;
 
-			while (x != EOF) { // This is the loop for the
-				// if we have reached the end of file ...
-				if (( x = fgetc(file)) == EOF) {
-					break; // ... then break out of the loop
-				}
+			while ( (x = fgetc(file)) != EOF) { 
 
 				// Until the first comma is seen, print the chars. This will print the experimenter's name.
 				while (x != ASCII_CODE_FOR_COMMA) // Check if current file pointer is at a comma
@@ -101,7 +97,7 @@ int main (int argc, char *argv[]) {
 				float rounded_up = ceilf(average * 100) / 100;
 				printf("%.2f\n", rounded_up);
 			}
-			close(file);
+			fclose(file);
 		}
 	}
 	return EXIT_SUCCESS;
